@@ -1,5 +1,5 @@
 #!/bin/bash
-until [] # TODO : add the command to check if port 80 is listening on localhost
+until (echo > /dev/tcp/localhost/80) > /dev/null 2>&1
 do
     echo "Waiting..."
     sleep 1
