@@ -2,7 +2,7 @@
 while read -r line; do
     id $line > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-	# TODO : Lock account
+	usermod -L $line
 	echo "User $line locked"
     else
 	echo "User $line not found"
