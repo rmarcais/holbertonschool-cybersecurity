@@ -1,2 +1,2 @@
 #!/bin/bash
-setfacl -d -m u:www-data:rx $1
+setfacl -d -m u:$2:$3 $1

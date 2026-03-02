@@ -1,2 +1,2 @@
 #!/bin/bash
-setfacl -m u:auditor:r $1
+setfacl -m u:$1:r $2
