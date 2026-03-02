@@ -3,7 +3,7 @@ if [ -d $1 ]
 then
     mkdir -p $1/backups/
     for filename in $1/*.log; do
-	if [ "$(stat -c %s $filename)" -gt 1024 ]
+	if [ "$(wc -c $filename | cut -d' ' -f1)" -gt 1024 ]
 	then
 	    gzip $filename
 	    mv $filename.gz $1/backups
