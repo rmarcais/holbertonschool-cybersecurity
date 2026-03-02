@@ -1,2 +1,2 @@
 #!/bin/bash
-chgrp developers $1 && chmod g+ws,+t $1
+mkdir -p $1 && chgrp $2 $1 && chmod $3 $1
