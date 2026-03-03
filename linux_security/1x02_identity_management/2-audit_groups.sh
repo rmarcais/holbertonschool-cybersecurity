@@ -1,14 +1,11 @@
 #!/bin/bash
 
-groups=("disk" "docker" "shadow")
+groups="disk docker shadow"
 
 awk -F: '{if ($3>=1000) print $1 }' $1 |
 while read -r user; do
-    for ug in $(id -nG $user 2>/dev/null); do
-	for g in ${groups[@]}; do
-	    if [ $ug = $g ]; then
-		echo "$user:$g"
-	    fi
-	done
+    user_groups=$(id -nG "$user" 2>/dev/null)
+    for g in $groups; do
+	echo $user_groups | grep -qw $g && echo "$user:$g"
     done
 done
