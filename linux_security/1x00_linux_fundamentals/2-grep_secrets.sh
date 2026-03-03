@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -R "password =" $1 2>/dev/null | cut -d:-f1 | sort -u
+grep -Rl "password =" $1 2>/dev/null
