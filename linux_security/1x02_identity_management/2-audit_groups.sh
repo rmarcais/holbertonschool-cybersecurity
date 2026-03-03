@@ -1,5 +1,5 @@
 #!/bin/bash
-awk -F':' '{if ($3 >= 1000) print $1 }' /etc/passwd |
+awk -F':' '{if ($3 >= 1000) print $1 }' $1 |
 while read -r user; do
     id -nG $user 2>/dev/null |
     tr ' ' '\n' |

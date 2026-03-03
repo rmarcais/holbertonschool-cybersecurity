@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# sudo apt-get update => waiting for permissions
-# sudo apt-get install -y libpam-pwquality => waiting for permissions
+apt-get update
+apt-get install -y $1
 
-file=/etc/pam.d/common-password
+file=$2
 rule="password        requisite                       pam_pwquality.so minlen=12 minclass=3"
 tmp=$(mktemp)
 
