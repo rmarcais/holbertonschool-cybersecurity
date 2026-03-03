@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 useradd $1
 
 passwd -l $1
