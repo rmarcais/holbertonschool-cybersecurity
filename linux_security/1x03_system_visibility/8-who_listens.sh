@@ -1,2 +1,2 @@
 #!/bin/bash
-lsof -n -i :$1 | awk 'N>1 {print $1}'
+lsof -n -iTCP:$1 | awk 'N>1 {print $1}'
