@@ -1,10 +1,10 @@
 #!/bin/bash
+CONFIG_FILE="./sentinel.conf"
 
-if [ ! -z "$1" ] && [ -f "$1" ]; then
-    source "$1"
+if [ ! -z "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
 else
-    echo "Error: bad config file"
-    echo "Usage: $0 <config_file>"
+    echo "Error: config file is missing"
     exit 1
 fi
 
