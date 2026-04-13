@@ -50,3 +50,28 @@ check_integrity() {
 }
 
 check_integrity
+
+check_ports() {
+    LISTENING_PORTS=$(ss -lnt4 | awk 'NR>1 {split($4,a,":"); print a[2]}')
+    for lp in $LISTENING_PORTS
+    do
+	found=0
+        for p in "${ALLOWED_PORTS[@]}"
+        do
+            if [ "$lp" == "$p" ]
+	    then
+		found=1
+		break
+	    fi
+	done
+
+	if [ "$found" -eq 0 ]
+	then
+	    fuser -k $lp/tcp > /dev/null
+	    echo "ALERT: Killed rogue process on port $lp"
+	fi
+    done
+}
+
+check_ports
+
