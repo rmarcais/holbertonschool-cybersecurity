@@ -12,15 +12,9 @@ fi
 : "${SERVICES:?Variable SERVICES not defined}"
 : "${FILES_TO_WATCH:?Variable FILES_TO_WATCH not defined}"
 
-cleanup_log() {
-    echo -n "" > /var/log/sentinel.log
-}
-
 log() {
     echo "{\"timestamp\": \"$(date -u +%FT%TZ)\",\"component\": \"$1\",\"target\": \"$2\",\"status\": \"$3\",\"details\": \"$4\"}" >> /var/log/sentinel.log
 }
-
-cleanup_log
 
 check_services() {
     for svc in "${SERVICES[@]}"
