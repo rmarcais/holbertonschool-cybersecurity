@@ -2,6 +2,7 @@
 Description=Run Sentinel Security Agent automatically every 5 minutes
 
 [Timer]
+Unit=sentinel.service
 OnBootSec=10s
 OnUnitActiveSec=5min
 
