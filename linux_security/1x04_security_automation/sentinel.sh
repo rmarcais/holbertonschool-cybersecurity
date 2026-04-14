@@ -12,14 +12,22 @@ fi
 : "${SERVICES:?Variable SERVICES not defined}"
 : "${FILES_TO_WATCH:?Variable FILES_TO_WATCH not defined}"
 
+log() {
+    echo "" > /var/log/sentinel.log
+}
+
+log
+
 check_services() {
     for svc in "${SERVICES[@]}"
     do
 	if pgrep -f "$svc" > /dev/null; then
 	    echo "OK: $svc is running"
+	    log "SERVICES" "$svc" "OK" "Service is running"
 	else
 	    if eval "$svc" > /dev/null; then
 	        echo "FIXED: Restarted $svc"
+		log "SERVICES" "$svc" "FIXED" "Restarted service"
 	    else
 		echo "Error starting $svc"
 	    fi
@@ -38,9 +46,11 @@ check_integrity() {
 
 	if [ "$HASH_GOLD_COPY" = "$HASH_FTW" ]; then
 	    echo "OK: $ftw integrity verified"
+	    log "INTEGRITY" "$ftw" "OK" "Integrity verified"
 	else
 	    if cp "$GOLD_COPY" "$ftw" > /dev/null; then
                 echo "FIXED: Restored $ftw"
+		log "INTEGRITY" "$ftw" "FIXED" "Restored file"
             else
                 echo "Error checking integrity of $ftw"
             fi
@@ -69,6 +79,7 @@ check_ports() {
 	then
 	    fuser -k $lp/tcp > /dev/null
 	    echo "ALERT: Killed rogue process on port $lp"
+	    log "PORT" "$lp" "ALERT" "Killed rogue process"
 	fi
     done
 }
