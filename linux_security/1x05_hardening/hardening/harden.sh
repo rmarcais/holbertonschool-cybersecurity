@@ -17,3 +17,4 @@ fi
 ####################
 
 source $NETWORK_SCRIPT
+source $SSH_SCRIPT
