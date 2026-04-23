@@ -11,11 +11,21 @@ set_fw_policy() {
     grep -qxF "$1=$2" $3 || echo "$1=$2" >> $3
 }
 
+# Generates logs for Network domain
+generate_log() {
+    local ssh_port=$(grep -Ei '[[:space:]]*Port[[:space:]]+' $SSHD_CONFIG | awk '{print $2}' | head -n1)
+
+    log $1 "INFO" "SSH configured on port $ssh_port."
+    log $1 "INFO" "Firewall policy created: ports $ALLOW_SSH, $ALLOW_HTTP, $ALLOW_HTTPS ALLOWED."
+}
+
 set_fw_policy "DEFAULT_INPUT" $DEFAULT_INPUT $FW_CFG_FILE
 set_fw_policy "DEFAULT_OUTPUT" $DEFAULT_OUTPUT $FW_CFG_FILE
 set_fw_policy "ALLOW_SSH" $ALLOW_SSH $FW_CFG_FILE
 set_fw_policy "ALLOW_HTTP" $ALLOW_HTTP $FW_CFG_FILE
 set_fw_policy "ALLOW_HTTPS" $ALLOW_HTTPS $FW_CFG_FILE
+
+generate_log $REPORT_FILE
 
 # Disable IP forwarding and ignore ICMP echo requests
 sed -i -r 's/^net.ipv4.ip_forward=1$/net.ipv4.ip_forward=0/' $SYSCTL_CFG

@@ -11,6 +11,8 @@ set_password_policy() {
         awk -v rule="$rule" '!done && $0 ~ /^[[:space:]]*password[[:space:]]+.*pam_unix\.so/ { print rule; done=1 } {print}' $1 > $tmp
         mv $tmp $1
     fi
+
+    log $REPORT_FILE "INFO" "Set password policy."
 }
 
 set_password_max_age() {
@@ -20,18 +22,23 @@ set_password_max_age() {
     else
         echo "PASS_MAX_DAYS	$2" >> $1
     fi
+
+    log $REPORT_FILE "INFO" "Set PASS_MAX_DAYS to $2 days."
 }
 
 lockout() {
     sed -i -r "s|^#[[:space:]]*deny.*|deny = $2|" $1
+
+    log $REPORT_FILE "INFO" "Set password max attempt to 5."
 }
 
 cleanup() {
     local file="$1"
     shift
     local groups=("$@")
+    local deleted_count=0
+    local deleted_users=()
 
-    awk -F: '{if ($3>=1000) print $1 }' $file |
     while read -r user; do
         local user_groups=$(id -nG "$user" 2>/dev/null)
 	local found=0
@@ -45,8 +52,18 @@ cleanup() {
 
 	if [ $found -eq 0 ] && [ "$user" != $CURRENT_USER ]; then
 	    deluser "$user"
+	    ((++deleted_count))
+	    deleted_users+=("$user")
 	fi
-    done
+    done < <(awk -F: '$3>=1000 {print $1}' "$file")
+
+    deleted_users_list=$(IFS=', '; echo "${deleted_users[*]}")
+
+    if [ ${#deleted_users[@]} -eq 0 ]; then
+	log $REPORT_FILE "INFO" "None unauthorized user removed."
+    else
+        log $REPORT_FILE "INFO" "$deleted_count unauthorized users removed: $deleted_users_list"
+    fi
 }
 
 lock_password() {
