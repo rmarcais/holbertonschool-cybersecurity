@@ -22,7 +22,7 @@ hardening/
 │   ├── ssh.sh             # SSH hardening functions
 │   ├── identity.sh        # User/password functions
 │   ├── system.sh          # System hardening functions
-│   └──audit_report.sh    # Audit report functions
+│   └── audit_report.sh    # Audit report functions
 └── README.md              # Documentation
 ```
 
@@ -37,4 +37,10 @@ Then :
 
 ```
 ./harden.sh
+```
+
+To see the generated report :
+
+```
+cat audit_report.txt
 ```
