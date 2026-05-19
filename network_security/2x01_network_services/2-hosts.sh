@@ -1,2 +1,2 @@
 #!/bin/bash
-cat /etc/hosts | grep -E "^[[:digit:]].*localhost$" | awk '{print $1}'
+cat /etc/hosts | grep -E "^[[:digit:]].*localhost$" | awk -F' ' '{printf "%s", $1}'
