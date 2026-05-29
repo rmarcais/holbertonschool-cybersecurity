@@ -1,0 +1,2 @@
+ftp && ftp.request.command == USER
+ftp && ftp.request.command == PASS
