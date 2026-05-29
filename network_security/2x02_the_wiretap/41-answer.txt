@@ -1,1 +1,1 @@
-10.10.10.99||cmd-relay.darknet-c2.io||ip.addr == 10.10.10.99
+10.10.10.99||cmd-relay.darknet-c2.io||tcp.flags.syn == 1
